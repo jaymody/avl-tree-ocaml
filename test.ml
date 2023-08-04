@@ -1,4 +1,4 @@
-open Lib.BST
+open Lib.AVL
 
 (* basic tests *)
 let () =
@@ -70,7 +70,16 @@ let () =
 (* calculates the height of the tree *)
 let rec calc_height = function
   | Empty -> 0
-  | Node (l, _, _, r) -> 1 + max (calc_height l) (calc_height r)
+  | Node (l, _, _, r, _) -> 1 + max (calc_height l) (calc_height r)
+;;
+
+let rec is_height_balanced = function
+  | Empty -> true
+  | Node (l, _, _, r, h) as node ->
+    is_height_balanced l
+    && is_height_balanced r
+    && abs (calc_height l - calc_height r) < 2
+    && h = calc_height node
 ;;
 
 let () =
@@ -78,13 +87,15 @@ let () =
   let list = List.init size (fun x -> x) in
   let tree = List.fold_left (fun tree num -> add num (-num) tree) empty list in
   Printf.printf "Height after %d insertions: %d\n" size (calc_height tree);
+  assert (is_height_balanced tree);
   let tree =
     List.fold_left
       (fun tree num -> snd (remove num tree))
       tree
       (List.init (size / 2) (fun x -> x))
   in
-  Printf.printf "Height after %d insertions: %d\n" (size / 2) (calc_height tree)
+  Printf.printf "Height after %d insertions: %d\n" (size / 2) (calc_height tree);
+  assert (is_height_balanced tree)
 ;;
 
 Printf.printf "Tests passed\n"
