@@ -94,7 +94,7 @@ let () =
       tree
       (List.init (size / 2) (fun x -> x))
   in
-  Printf.printf "Height after %d insertions: %d\n" (size / 2) (calc_height tree);
+  Printf.printf "Height after %d deletions: %d\n" (size / 2) (calc_height tree);
   assert (is_height_balanced tree)
 ;;
 
