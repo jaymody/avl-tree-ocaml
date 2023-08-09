@@ -70,16 +70,16 @@ let () =
 (* calculates the height of the tree *)
 let rec calc_height = function
   | Empty -> 0
-  | Node (l, _, _, r, _) -> 1 + max (calc_height l) (calc_height r)
+  | Node n -> 1 + max (calc_height n.l) (calc_height n.r)
 ;;
 
 let rec is_height_balanced = function
   | Empty -> true
-  | Node (l, _, _, r, h) as node ->
-    is_height_balanced l
-    && is_height_balanced r
-    && abs (calc_height l - calc_height r) < 2
-    && h = calc_height node
+  | Node n ->
+    is_height_balanced n.l
+    && is_height_balanced n.r
+    && abs (calc_height n.l - calc_height n.r) < 2
+    && n.h = 1 + max (calc_height n.l) (calc_height n.r)
 ;;
 
 let () =
